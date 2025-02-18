@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Heart Images Around Center Date</title>
+  <!-- Tailwind CSS via CDN -->
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Warm pink gradient background with animated shifting */
+    body {
+      background: linear-gradient(270deg, #ffb6c1, #ff69b4, #ffb6c1);
+      background-size: 600% 600%;
+      animation: gradientAnimation 15s ease infinite;
+    }
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+.mea-culpa-regular {
+  font-family: "Mea Culpa", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+    /* Shimmer effect for text */
+    .shimmer {
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.8) 50%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      background-size: 200% auto;
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes shimmer {
+      to {
+        background-position: -200% center;
+      }
+    }
+
+    /* Stylish effects for sections */
+    .stylish-section {
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- AUDIO (autoplays, muted by default to avoid browser blocking) -->
+  <audio id="backgroundMusic" src="/assets/bb.mp3" autoplay></audio>
+
+  <!-- STICKY LYRICS BAR AT TOP with a shimmer effect -->
+  <div  class="text-black sticky top-0 w-full bg-white text-center text-2xl md:text-5xl font-bold p-2 shadow-md shimmer">
+    <h1 id="title" class="mea-culpa-regular text-8xl">Happy Birthday Baby</h1>
+    <!-- Lyrics text will be injected via JS -->
+  </div>
+  <div id="lyrics-container" class="text-black sticky top-0 w-full pt-36 bg-white text-center text-2xl md:text-5xl font-bold p-2 shadow-md shimmer">
+    <!-- Lyrics text will be injected via JS -->
+  </div>
+
+  <!-- MAIN CONTENT AREA with a stylish backdrop -->
+  <main class="flex-1 flex items-center justify-center relative overflow-hidden stylish-section">
+    <!-- DATE IN CENTER with shimmer effect -->
+<div id="dateDisplay" class="z-10 text-6xl  pt-16 font-bold text-gray-800 shimmer"></div>    <!-- CONTAINER FOR THE HEART-SHAPED IMAGES -->
+    <div id="heart-container" class="absolute inset-0 pointer-events-none"></div>
+  </main>
+
+  <!-- OPTIONAL FOOTER with a stylish effect -->
+  <div class="bg-white text-center py-4 stylish-section">
+    <p class="text-gray-700">I Love You Habibi! Happy Birthday!</p>
+  </div>
+
+  <script>
+    /**************************************************
+     * 1) LYRICS SECTION
+     **************************************************/
+  // Define your time-coded lyrics
+  const lyrics = [
+    { time: 0, text: "I love You Habibi!" },
+    { time: 5, text: "Happy Birthday!" },
+    { time: 10, text: "Fifteen years of laughter, waiting in my heart" },
+    { time: 15, text: "You were the light I dreamed of right from the start" },
+    { time: 19, text: "Finally found the courage, dared to say your name" },
+    { time: 24, text: "And on January 18th, our story changed its frame" },
+
+    { time: 29, text: "We’ve walked through storms, but you always stood strong" },
+    { time: 34, text: "Supporting me so fiercely, cheering all along" },
+    { time: 39, text: "Now here we are, smiling side by side" },
+    { time: 44, text: "You’re my reason, my sunshine, my pride" },
+
+    { time: 50, text: "Happy birthday, Marah, your spirit’s shining bright" },
+    { time: 55, text: "We’re swaying in the glow of your special night" },
+    { time: 60, text: "With every beat and every rhyme" },
+    { time: 65, text: "I’m yours forever, time after time" },
+    { time: 70, text: "“I love you proportionally,” you know that it’s true" },
+    { time: 75, text: "Happy birthday, my world revolves around you" },
+
+    { time: 80, text: "Every moment spent together lifts my soul so high" },
+    { time: 85, text: "Your laughter’s like a melody that never says goodbye" },
+    { time: 90, text: "I treasure every date, every glance, every kiss" },
+    { time: 95, text: "With you in my life, nothing’s sweeter than this" },
+
+    { time: 100, text: "This feeling is endless, stronger than before" },
+    { time: 105, text: "We’ll keep on growing, love you more and more" },
+    { time: 110, text: "Close your eyes and make a wish—it’s all for you" },
+    { time: 115, text: "My heart is singing, let’s make dreams come true" },
+
+    { time: 120, text: "Happy birthday, Marah, your spirit’s shining bright" },
+    { time: 125, text: "We’re swaying in the glow of your special night" },
+    { time: 130, text: "With every beat and every rhyme" },
+    { time: 135, text: "I’m yours forever, time after time" },
+    { time: 140, text: "“I love you proportionally,” you know that it’s true" },
+    { time: 145, text: "Happy birthday, my world revolves around you" },
+
+    { time: 153, text: "I love you, Marah—on this day and beyond" },
+    { time: 155, text: "Your smile is the song to which my heart responds" },
+    { time: 160, text: "Here’s to many more birthdays, many more years" },
+    { time: 165, text: "All my love, all my joy, is yours, my dear" }
+  ];
+
+
+  const lyricsContainer = document.getElementById('lyrics-container');
+  const audio = document.getElementById('backgroundMusic');
+
+  // Listen for the audio time update event
+  audio.addEventListener('timeupdate', () => {
+    const currentTime = audio.currentTime;
+    let currentLyric = lyrics[0].text;
+
+    // Loop through the lyrics array and find the most recent lyric
+    for (let i = 0; i < lyrics.length; i++) {
+      if (currentTime >= lyrics[i].time) {
+        currentLyric = lyrics[i].text;
+      } else {
+        // Since the array is in order, you can break early
+        break;
+      }
+    }
+
+    // Update the lyrics container with the current lyric
+    lyricsContainer.textContent = currentLyric;
+  });
+
+    /**************************************************
+     * 2) DISPLAY THE CURRENT DATE IN THE CENTER
+     **************************************************/
+    const dateDisplay = document.getElementById('dateDisplay');
+    // You can format the date as desired. Here it's hardcoded.
+    dateDisplay.textContent = '19/02/1997';
+
+    /**************************************************
+     * 3) SCATTER IMAGES IN A HEART SHAPE
+     **************************************************/
+    const heartContainer = document.getElementById('heart-container');
+    const imageSources = [
+      "/assets/images/1.JPG", 
+      "/assets/images/3.jpg",
+      "/assets/images/4.jpg",
+      "/assets/images/5.jpg",
+      "/assets/images/6.png",
+      "/assets/images/7.png",
+      "/assets/images/8.jpg",
+      "/assets/images/9.jpg",
+    ];
+    const numImages = 20;
+
+    function placeHeartImages() {
+      const rect = heartContainer.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      heartContainer.innerHTML = "";
+      for (let i = 0; i < numImages; i++) {
+        const t = (2 * Math.PI * i) / numImages;
+        let x = 16 * Math.sin(t) ** 3;
+        let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        const scale = 26;
+        x *= scale;
+        y *= -scale;
+        const finalX = centerX + x;
+        const finalY = centerY + y;
+        const img = document.createElement('img');
+        const randomSrc = imageSources[Math.floor(Math.random() * imageSources.length)];
+        img.src = randomSrc;
+        img.classList.add("absolute", "rounded-3xl");
+        img.style.width = "110px";
+        img.style.height = "110px";
+        img.style.objectFit = "cover";
+        img.style.left = finalX + "px";
+        img.style.top = finalY + "px";
+        heartContainer.appendChild(img);
+      }
+    }
+
+    function dropHeartImage() {
+      const rect = heartContainer.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const t = Math.random() * 2 * Math.PI;
+      let x = 16 * Math.sin(t) ** 3;
+      let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      const scale = 30;
+      x *= scale;
+      y *= -scale;
+      const finalX = centerX + x;
+      const finalY = centerY + y;
+      const img = document.createElement('img');
+      const randomSrc = imageSources[Math.floor(Math.random() * imageSources.length)];
+      img.src = randomSrc;
+      img.classList.add("absolute", "rounded-3xl");
+      img.style.width = "110px";
+      img.style.height = "110px";
+      img.style.objectFit = "cover";
+      img.style.left = finalX + "px";
+      img.style.top = finalY + "px";
+      img.style.transform = "translateY(-300px)";
+      img.style.opacity = "0";
+      heartContainer.appendChild(img);
+      void img.offsetWidth;
+      img.style.transition = "transform 2s ease-out, opacity 2s ease-out";
+      img.style.transform = "translateY(0)";
+      img.style.opacity = "1";
+    }
+    setInterval(dropHeartImage, 1000);
+    placeHeartImages();
+    window.addEventListener('resize', placeHeartImages);
+
+    /**************************************************
+     * 4) AUDIO AUTOPLAY HANDLING
+     **************************************************/
+    document.body.addEventListener('click', function unmute() {
+      const audio = document.getElementById('backgroundMusic');
+      audio.muted = false;
+      document.body.removeEventListener('click', unmute);
+    });
+  </script>
+</body>
+</html>
